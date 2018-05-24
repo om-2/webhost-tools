@@ -1,0 +1,9 @@
+server {
+  listen 80;
+  server_name %SITE% www.%SITE%;
+
+  access_log /home/%USER%/web/logs/access-%SITE%.log extended;
+  error_log  /home/%USER%/web/logs/error-%SITE%.log;
+
+  root /home/%USER%/web/www/%SITE%;
+

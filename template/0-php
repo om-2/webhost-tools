@@ -1,0 +1,27 @@
+  # This section is meant to serve sites using PHP
+  # It is mutually exclusive with all of the other 0-*.conf locations
+
+  location / {
+    index index.php;
+    try_files $uri $uri/ $uri.php;
+  }
+
+  location ~ [^/]\.php(/|$) {
+    fastcgi_split_path_info ^(.+?\.php)(/.*)$;
+    if (!-f $document_root$fastcgi_script_name) {
+        return 404;
+    }
+
+    fastcgi_pass unix:/var/run/php-fpm/php-fpm.sock-%USER%;
+    fastcgi_index index.php;
+    include fastcgi_params;
+  }
+
+  location ~ ^/fpm-(status|ping)$ {
+    auth_basic "Restricted";
+    auth_basic_user_file /home/%USER%/web/.htpasswd;
+    #access_log off;
+    include fastcgi_params;
+    fastcgi_pass unix:/var/run/php-fpm/php-fpm.sock-%USER%;
+  }
+

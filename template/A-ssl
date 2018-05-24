@@ -1,0 +1,14 @@
+server {
+  listen 443 ssl spdy;
+  server_name %SITE% www.%SITE%;
+
+  access_log /home/%USER%/web/logs/access-%SITE%.log extended;
+  error_log  /home/%USER%/web/logs/error-%SITE%.log;
+
+  root /home/%USER%/web/www/%SITE%;
+
+  include global/ssl.conf;
+  ssl_certificate /var/lib/acme/live/%SITE%/fullchain;
+  ssl_certificate_key /var/lib/acme/live/%SITE%/privkey;
+  ssl_trusted_certificate /var/lib/acme/live/%SITE%/chain;
+

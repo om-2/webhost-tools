@@ -1,0 +1,8 @@
+  # This section is meant to serve static sites
+  # It is mutually exclusive with all of the other 0-*.conf locations
+
+  location / {
+    index index.html index.txt;
+    try_files $uri $uri/ =404;
+  }
+
