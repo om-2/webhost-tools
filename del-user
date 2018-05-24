@@ -1,0 +1,31 @@
+#!/bin/bash
+
+if [ "$#" -ne 1 ]; then
+  echo "Please specify username to remove"
+  exit 1
+fi
+
+USER="$1"
+
+if [ -e "/etc/php-fpm.d/${USER}.conf" ]; then
+  echo "INFO: PHP-FPM conf exists. Removing..."
+  rm -rf "/etc/php-fpm.d/${USER}.conf"
+  systemctl reload php-fpm.service
+else
+  echo "WARN: php-fpm conf did not exist"
+fi
+
+if [ -d "/etc/nginx/site/${USER}" ]; then
+  echo "INFO: Nginx config directory for user exists. Removing..."
+  rm -rf /etc/nginx/site/${USER}
+  systemctl reload nginx.service
+else
+  echo "WARN: nginx config did not exist"
+fi
+
+if id ${USER} > /dev/null 2>&1; then
+  echo "INFO: Removing unix user"
+  userdel -fr $1
+else
+  echo "WARN: Unix user did not exist"
+fi
